@@ -320,6 +320,52 @@ Detailed contract:
 
 `docs/architecture/module-public-boundary.md`
 
+## B1.3 Decision
+
+Status: COMPLETE
+
+The canonical module category dependency matrix is defined.
+
+Summary:
+
+- Foundation may depend only on explicitly allowed Foundation Public contracts.
+- Platform may consume Foundation Public contracts.
+- Specialized may consume Foundation and explicitly allowed Platform/Specialized Public contracts.
+- Product may consume Foundation, Platform, Specialized, and explicitly declared Product Public contracts.
+- Foundation must never depend on Platform, Specialized, or Product.
+- Platform and Specialized must never depend on Product.
+- All cross-module dependencies require Public targets.
+- All dependencies must be explicitly declared.
+- Circular dependencies are forbidden.
+
+Detailed contract:
+
+`docs/architecture/module-dependency-matrix.md`
+
+## B1.2.1 Decision
+
+Status: COMPLETE
+
+The Base package ownership and extension model is now defined.
+
+Key decisions:
+
+- Base reusable technical capabilities live under `packages/base/`.
+- Product/business modules live outside Base packages under `modules/`.
+- Project customization lives under project-owned extension code in `extensions/`.
+- Project customization must not modify Base package internals.
+- Capabilities are injected through Public contracts rather than foreign concrete classes.
+- PHP Attributes may provide declarative registration metadata.
+- AOP/interceptors are reserved for cross-cutting behavior.
+- Optional cross-module relationships use contribution/extension contracts rather than reverse dependencies.
+- Generated-project upgrade safety depends on strict ownership separation.
+
+Detailed contract:
+
+`docs/architecture/base-package-extension-model.md`
+
+This decision refines and partially supersedes the original single `Modules/` physical-root assumption in B1.1.
+
 ## Current Step
 
-B1.3 — Module category dependency matrix.
+B1.2.2 — Validate package, extension, attribute, AOP, and contribution boundaries before continuing the dependency matrix.

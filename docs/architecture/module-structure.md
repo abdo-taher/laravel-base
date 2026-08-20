@@ -659,3 +659,38 @@ Categories are:
 - Product
 
 This decision becomes the basis for the remaining B1 work.
+
+## Package Ownership Amendment
+
+The original B1.1 structural contract used a single conceptual `Modules/` root.
+
+B1.2.1 refines that decision.
+
+The physical ownership model is now:
+
+```text
+packages/base/
+    Foundation/
+    Platform/
+    Specialized/
+
+modules/
+    Product/
+
+extensions/
+    Base/
+```
+
+`packages/base/` contains Base-owned reusable packages.
+
+`modules/` contains project-owned or reusable business modules.
+
+`extensions/` contains project-owned customization of Base packages.
+
+The logical category and dependency rules remain valid.
+
+The detailed package ownership and extension contract is defined in:
+
+`docs/architecture/base-package-extension-model.md`
+
+This amendment supersedes the single-root physical layout where the two conflict.

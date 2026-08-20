@@ -532,3 +532,21 @@ B1.2 does not implement:
 - persistence integration
 
 B1.2 defines the visibility contract only.
+
+## Package Extension Amendment
+
+Public contracts are also the supported foundation for project extensions.
+
+Project extensions must not import Base package internals.
+
+An extension targeting a Base package may depend only on:
+
+- the package Public contract;
+- explicitly published extension contracts;
+- explicitly published capability contracts.
+
+Moving customization outside the package does not weaken the Public/Internal rule.
+
+The detailed extension model is defined in:
+
+`docs/architecture/base-package-extension-model.md`
