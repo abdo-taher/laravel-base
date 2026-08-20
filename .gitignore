@@ -36,3 +36,6 @@ Thumbs.db
 # Local environment overrides
 .env.*
 !.env.example
+
+# Deptrac runtime cache
+/.deptrac.cache

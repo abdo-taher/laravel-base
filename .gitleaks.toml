@@ -1,0 +1,14 @@
+title = "Base Platform Gitleaks Configuration"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Ignore generated dependency/runtime directories"
+paths = [
+  '''\.git/''',
+  '''vendor/''',
+  '''node_modules/''',
+  '''storage/''',
+  '''bootstrap/cache/'''
+]
