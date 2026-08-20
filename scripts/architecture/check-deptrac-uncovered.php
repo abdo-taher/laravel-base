@@ -18,6 +18,7 @@ if (! is_array($data)) {
 
 $baseOwnedNamespaces = [
     'App\\',
+    'Base\\',
     'Database\\',
     'Tests\\',
     'Modules\\',

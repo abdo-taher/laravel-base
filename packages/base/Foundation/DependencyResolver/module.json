@@ -1,0 +1,28 @@
+{
+    "name": "DependencyResolver",
+    "category": "Foundation",
+    "version": "0.1.0",
+    "ownership": "base-owned",
+    "description": "Constructs the module dependency graph, detects cycles, and produces a safe load order.",
+    "namespace": "Base\\Foundation\\DependencyResolver",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "provides": [],
+    "extension_points": [],
+    "data": {
+        "tables": []
+    },
+    "events": {
+        "publishes": [],
+        "consumes": []
+    },
+    "lifecycle": {
+        "enableable": false,
+        "disable_policy": "not-applicable"
+    },
+    "security": {
+        "classification": "internal"
+    }
+}

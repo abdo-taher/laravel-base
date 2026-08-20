@@ -1,0 +1,28 @@
+{
+    "name": "ModuleManager",
+    "category": "Foundation",
+    "version": "0.1.0",
+    "ownership": "base-owned",
+    "description": "Discovers, validates, and manages the lifecycle of Base packages and project modules.",
+    "namespace": "Base\\Foundation\\ModuleManager",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "provides": [],
+    "extension_points": [],
+    "data": {
+        "tables": []
+    },
+    "events": {
+        "publishes": [],
+        "consumes": []
+    },
+    "lifecycle": {
+        "enableable": false,
+        "disable_policy": "not-applicable"
+    },
+    "security": {
+        "classification": "internal"
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "name": "CapabilityRegistry",
+    "category": "Foundation",
+    "version": "0.1.0",
+    "ownership": "base-owned",
+    "description": "Registers and resolves runtime capabilities. Consumers depend on capabilities, not concrete providers.",
+    "namespace": "Base\\Foundation\\CapabilityRegistry",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "provides": [],
+    "extension_points": [],
+    "data": {
+        "tables": []
+    },
+    "events": {
+        "publishes": [],
+        "consumes": []
+    },
+    "lifecycle": {
+        "enableable": false,
+        "disable_policy": "not-applicable"
+    },
+    "security": {
+        "classification": "internal"
+    }
+}

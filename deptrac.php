@@ -13,6 +13,7 @@ return static function (DeptracConfig $config): void {
             './app',
             './bootstrap',
             './database',
+            './packages/base',
             './routes',
             './tests',
         )
@@ -43,6 +44,22 @@ return static function (DeptracConfig $config): void {
             $tests = Layer::withName('Tests')->collectors(
                 DirectoryConfig::create('tests/.*'),
             ),
+            // ── Base Foundation layers ──────────────────────────────────────
+            $baseModuleManager = Layer::withName('Base.Foundation.ModuleManager')->collectors(
+                DirectoryConfig::create('packages/base/Foundation/ModuleManager/.*'),
+            ),
+            $baseManifest = Layer::withName('Base.Foundation.Manifest')->collectors(
+                DirectoryConfig::create('packages/base/Foundation/Manifest/.*'),
+            ),
+            $baseCapabilityRegistry = Layer::withName('Base.Foundation.CapabilityRegistry')->collectors(
+                DirectoryConfig::create('packages/base/Foundation/CapabilityRegistry/.*'),
+            ),
+            $baseDependencyResolver = Layer::withName('Base.Foundation.DependencyResolver')->collectors(
+                DirectoryConfig::create('packages/base/Foundation/DependencyResolver/.*'),
+            ),
+            $baseExtensionRegistry = Layer::withName('Base.Foundation.ExtensionRegistry')->collectors(
+                DirectoryConfig::create('packages/base/Foundation/ExtensionRegistry/.*'),
+            ),
         )
         ->rulesets(
             Ruleset::forLayer($hostHttp)
@@ -72,6 +89,19 @@ return static function (DeptracConfig $config): void {
                     $bootstrap,
                     $database,
                     $routes,
+                    $baseModuleManager,
+                    $baseManifest,
+                    $baseCapabilityRegistry,
+                    $baseDependencyResolver,
+                    $baseExtensionRegistry,
                 ),
+
+            // Foundation packages are self-contained at skeleton stage.
+            // No cross-package dependencies are declared yet.
+            Ruleset::forLayer($baseModuleManager),
+            Ruleset::forLayer($baseManifest),
+            Ruleset::forLayer($baseCapabilityRegistry),
+            Ruleset::forLayer($baseDependencyResolver),
+            Ruleset::forLayer($baseExtensionRegistry),
         );
 };

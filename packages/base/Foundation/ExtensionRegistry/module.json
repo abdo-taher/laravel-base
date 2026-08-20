@@ -1,0 +1,28 @@
+{
+    "name": "ExtensionRegistry",
+    "category": "Foundation",
+    "version": "0.1.0",
+    "ownership": "base-owned",
+    "description": "Discovers and manages extension points: contributors, decorators, strategies, and relation contributors.",
+    "namespace": "Base\\Foundation\\ExtensionRegistry",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "provides": [],
+    "extension_points": [],
+    "data": {
+        "tables": []
+    },
+    "events": {
+        "publishes": [],
+        "consumes": []
+    },
+    "lifecycle": {
+        "enableable": false,
+        "disable_policy": "not-applicable"
+    },
+    "security": {
+        "classification": "internal"
+    }
+}

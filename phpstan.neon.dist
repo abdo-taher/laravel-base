@@ -9,6 +9,7 @@ parameters:
         - app
         - bootstrap
         - database
+        - packages/base
         - routes
         - tests
 
