@@ -1,15 +1,37 @@
 {
     "name": "ModuleManager",
     "category": "Foundation",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "ownership": "base-owned",
-    "description": "Discovers, validates, and manages the lifecycle of Base packages and project modules.",
+    "description": "Orchestrates discovery, validation, dependency resolution, capability registration, and boot ordering of Base packages and project modules.",
     "namespace": "Base\\Foundation\\ModuleManager",
     "dependencies": {
-        "required": [],
+        "required": [
+            {
+                "capability": "manifest.read",
+                "version": "^1.0"
+            },
+            {
+                "capability": "dependency.resolve",
+                "version": "^1.0"
+            },
+            {
+                "capability": "capability.resolve",
+                "version": "^1.0"
+            }
+        ],
         "optional": []
     },
-    "provides": [],
+    "provides": [
+        {
+            "capability": "module.manager",
+            "version": "0.2.0"
+        },
+        {
+            "capability": "module.discovery",
+            "version": "0.2.0"
+        }
+    ],
     "extension_points": [],
     "data": {
         "tables": []

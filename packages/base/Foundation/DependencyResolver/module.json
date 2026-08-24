@@ -3,13 +3,23 @@
     "category": "Foundation",
     "version": "0.1.0",
     "ownership": "base-owned",
-    "description": "Constructs the module dependency graph, detects cycles, and produces a safe load order.",
+    "description": "Constructs the module dependency graph, validates it, and produces a deterministic load order.",
     "namespace": "Base\\Foundation\\DependencyResolver",
     "dependencies": {
-        "required": [],
+        "required": [
+            {
+                "package": "Manifest",
+                "version": "^0.1"
+            }
+        ],
         "optional": []
     },
-    "provides": [],
+    "provides": [
+        {
+            "capability": "dependency.resolve",
+            "version": "1.0.0"
+        }
+    ],
     "extension_points": [],
     "data": {
         "tables": []

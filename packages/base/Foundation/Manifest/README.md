@@ -8,42 +8,51 @@
 
 ## Purpose
 
-Parses, validates, and hydrates `module.json` manifest files into structured runtime objects.
+Reads, validates, and hydrates `module.json` files into immutable runtime values.
 
-Manifest is the parsing and validation layer for all module metadata. It is responsible for:
+The package is responsible for:
 
-- reading `module.json` files from package and module directories
-- validating manifest structure against the manifest contract schema
-- hydrating raw JSON into typed PHP value objects
-- detecting schema violations and providing actionable error messages
-- enforcing version format rules (semantic versioning)
-- providing the manifest data contract consumed by ModuleManager
+- reading JSON manifest files;
+- validating manifest identity and structural rules;
+- hydrating typed readonly value objects;
+- reporting file, JSON, and validation failures through Public exceptions.
 
 ## Public Contracts
 
-No public contracts are defined yet. This is a skeleton package.
+- `Public\\Contracts\\ManifestReader` reads and validates a manifest file.
+- `Public\\ValueObjects\\Manifest` exposes immutable manifest metadata.
+- `Public\\ValueObjects\\ManifestDependency` exposes an immutable dependency declaration.
+- `Public\\ValueObjects\\ManifestCapability` exposes an immutable provided capability.
+- `Public\\Exceptions\\ManifestReadFailure` reports file and JSON failures.
+- `Public\\Exceptions\\InvalidManifest` reports accumulated structural errors.
 
-Future public contracts will be added under `Public/Contracts/`.
+Public contracts contain no Laravel dependencies.
 
 ## Capabilities Provided
 
-None declared yet.
+- `manifest.read` version `1.0.0`.
 
 ## Dependencies
 
-None declared yet.
+None. The runtime uses PHP JSON and filesystem functions.
 
 ## Data Ownership
 
 No tables owned. Manifest owns no persistent state.
 
+## Validation
+
+The reader requires valid `name`, `category`, `version`, `namespace`, and
+`ownership` fields. It validates required/optional dependency lists and the
+`provides` capability list before constructing value objects.
+
 ## Configuration
 
-No configuration yet.
+No configuration.
 
 ## Lifecycle
 
-Manifest is not a user-facing feature module. It cannot be disabled independently.
+Manifest is foundational runtime infrastructure and cannot be disabled independently.
 
 ## Testing
 
@@ -53,4 +62,4 @@ composer test -- --filter=Manifest
 
 ## Status
 
-Skeleton only. Runtime implementation is deferred to future B2 tasks.
+B2.1 manifest loading and structural validation runtime implemented.

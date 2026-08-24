@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Base\Foundation\Manifest;
 
+use Base\Foundation\Manifest\Infrastructure\JsonManifestReader;
+use Base\Foundation\Manifest\Public\Contracts\ManifestReader;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -12,24 +14,21 @@ use Illuminate\Support\ServiceProvider;
  * Ownership: base-owned
  * Category:  Foundation
  *
- * Responsibilities (future):
+ * Responsibilities:
  *   - module.json schema validation
  *   - Manifest parsing and normalisation
  *   - Manifest-to-runtime object hydration
  *   - Version compatibility validation
- *
- * This is a skeleton provider. No bindings are registered until
- * the Manifest runtime is implemented.
  */
 final class ManifestServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        // Runtime implementation deferred.
+        $this->app->singleton(ManifestReader::class, JsonManifestReader::class);
     }
 
     public function boot(): void
     {
-        // Runtime implementation deferred.
+        // No boot-time behavior is required.
     }
 }

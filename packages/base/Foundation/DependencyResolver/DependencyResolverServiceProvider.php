@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Base\Foundation\DependencyResolver;
 
+use Base\Foundation\DependencyResolver\Application\ManifestDependencyResolver;
+use Base\Foundation\DependencyResolver\Public\Contracts\DependencyResolver;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -12,24 +14,21 @@ use Illuminate\Support\ServiceProvider;
  * Ownership: base-owned
  * Category:  Foundation
  *
- * Responsibilities (future):
- *   - Module dependency graph construction
+ * Responsibilities:
+ *   - Dependency graph construction
+ *   - Dependency direction validation
  *   - Circular dependency detection
- *   - Topological sort for load order
- *   - Version constraint satisfaction
- *
- * This is a skeleton provider. No bindings are registered until
- * the DependencyResolver runtime is implemented.
+ *   - Deterministic topological ordering
  */
 final class DependencyResolverServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        // Runtime implementation deferred.
+        $this->app->singleton(DependencyResolver::class, ManifestDependencyResolver::class);
     }
 
     public function boot(): void
     {
-        // Runtime implementation deferred.
+        // No boot-time behavior is required.
     }
 }

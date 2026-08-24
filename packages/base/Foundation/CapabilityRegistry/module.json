@@ -3,13 +3,18 @@
     "category": "Foundation",
     "version": "0.1.0",
     "ownership": "base-owned",
-    "description": "Registers and resolves runtime capabilities. Consumers depend on capabilities, not concrete providers.",
+    "description": "Registers and resolves versioned runtime capabilities through explicit provider definitions.",
     "namespace": "Base\\Foundation\\CapabilityRegistry",
     "dependencies": {
         "required": [],
         "optional": []
     },
-    "provides": [],
+    "provides": [
+        {
+            "capability": "capability.resolve",
+            "version": "1.0.0"
+        }
+    ],
     "extension_points": [],
     "data": {
         "tables": []

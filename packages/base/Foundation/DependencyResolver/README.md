@@ -8,49 +8,51 @@
 
 ## Purpose
 
-Constructs the module dependency graph, detects cycles, and produces a safe deterministic load order.
-
-DependencyResolver is the dependency analysis layer of the Base runtime. It is responsible for:
-
-- receiving the set of declared module manifests from ModuleManager
-- constructing a directed dependency graph from manifest declarations
-- detecting circular dependencies and reporting them as hard errors
-- performing a topological sort to determine a safe provider registration order
-- validating that all required dependencies have compatible available versions
-- identifying optional dependency availability and communicating it to consumers
-
-## Rules
-
-- Circular dependencies are always rejected.
-- A missing required dependency is a boot failure.
-- A missing optional dependency is reported but does not block boot.
-- Version constraints follow semantic versioning.
+Builds an immutable dependency graph from validated Manifest values, rejects invalid compositions, and returns a deterministic provider-first load order.
 
 ## Public Contracts
 
-No public contracts are defined yet. This is a skeleton package.
+- `Public\\Contracts\\DependencyResolver` resolves an iterable of validated manifests.
+- `Public\\Contracts\\DependencyGraph` exposes immutable node and edge lists.
+- `Public\\ValueObjects\\DependencyNode` represents a manifest in the graph.
+- `Public\\ValueObjects\\DependencyEdge` represents a consumer-to-provider declaration.
+- `Public\\ValueObjects\\ResolutionResult` exposes the graph and ordered nodes.
+- `Public\\Exceptions\\DependencyResolutionFailed` reports accumulated validation failures.
 
-Future public contracts will be added under `Public/Contracts/`.
+Public contracts contain no Laravel dependencies.
+
+## Validation
+
+The resolver rejects:
+
+- missing required package or capability providers;
+- forbidden category dependency directions;
+- duplicate dependency declarations;
+- empty version constraints;
+- ambiguous capability providers without a selection strategy;
+- circular dependencies.
+
+Missing optional dependencies do not block resolution.
+
+## Ordering
+
+Topological order is provider-first. When multiple nodes are ready, manifest names are sorted lexicographically so input iteration order cannot change the result.
 
 ## Capabilities Provided
 
-None declared yet.
+- `dependency.resolve` version `1.0.0`.
 
 ## Dependencies
 
-None declared yet.
+- Manifest Public value objects, declared as package `Manifest` version `^0.1`.
+
+## Version Foundation
+
+Every dependency declaration must contain a non-empty version constraint. Full semantic version compatibility solving is deferred.
 
 ## Data Ownership
 
-No tables owned. DependencyResolver owns no persistent state.
-
-## Configuration
-
-No configuration yet.
-
-## Lifecycle
-
-DependencyResolver is not a user-facing feature module. It cannot be disabled independently.
+No tables or persistent state.
 
 ## Testing
 
@@ -60,4 +62,4 @@ composer test -- --filter=DependencyResolver
 
 ## Status
 
-Skeleton only. Runtime implementation is deferred to future B2 tasks.
+B2.2 graph construction, validation, cycle detection, and deterministic ordering implemented.

@@ -9,7 +9,12 @@
         "required": [],
         "optional": []
     },
-    "provides": [],
+    "provides": [
+        {
+            "capability": "manifest.read",
+            "version": "1.0.0"
+        }
+    ],
     "extension_points": [],
     "data": {
         "tables": []

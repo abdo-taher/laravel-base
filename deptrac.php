@@ -96,12 +96,19 @@ return static function (DeptracConfig $config): void {
                     $baseExtensionRegistry,
                 ),
 
-            // Foundation packages are self-contained at skeleton stage.
-            // No cross-package dependencies are declared yet.
-            Ruleset::forLayer($baseModuleManager),
+            // ModuleManager orchestrates across all other Foundation packages.
+            // It may only access their Public contracts, not internal layers.
+            Ruleset::forLayer($baseModuleManager)
+                ->accesses(
+                    $baseManifest,
+                    $baseCapabilityRegistry,
+                    $baseDependencyResolver,
+                    $baseExtensionRegistry,
+                ),
             Ruleset::forLayer($baseManifest),
             Ruleset::forLayer($baseCapabilityRegistry),
-            Ruleset::forLayer($baseDependencyResolver),
+            Ruleset::forLayer($baseDependencyResolver)
+                ->accesses($baseManifest),
             Ruleset::forLayer($baseExtensionRegistry),
         );
 };

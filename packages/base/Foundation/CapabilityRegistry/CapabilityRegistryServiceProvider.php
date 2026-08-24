@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Base\Foundation\CapabilityRegistry;
 
+use Base\Foundation\CapabilityRegistry\Application\InMemoryCapabilityRegistry;
+use Base\Foundation\CapabilityRegistry\Public\Contracts\CapabilityResolver;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -12,24 +14,21 @@ use Illuminate\Support\ServiceProvider;
  * Ownership: base-owned
  * Category:  Foundation
  *
- * Responsibilities (future):
- *   - Capability registration
- *   - Provider discovery and resolution
- *   - Version-aware capability lookup
- *   - Security capability fail-closed enforcement
- *
- * This is a skeleton provider. No bindings are registered until
- * the CapabilityRegistry runtime is implemented.
+ * Responsibilities:
+ *   - Capability provider registration
+ *   - Version-aware capability resolution
+ *   - Optional capability absence
+ *   - Ambiguous-provider fail-closed behavior
  */
 final class CapabilityRegistryServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        // Runtime implementation deferred.
+        $this->app->singleton(CapabilityResolver::class, InMemoryCapabilityRegistry::class);
     }
 
     public function boot(): void
     {
-        // Runtime implementation deferred.
+        // No boot-time behavior or provider discovery is implemented in B2.3.
     }
 }

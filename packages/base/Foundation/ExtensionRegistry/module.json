@@ -9,7 +9,12 @@
         "required": [],
         "optional": []
     },
-    "provides": [],
+    "provides": [
+        {
+            "capability": "extension.registry",
+            "version": "1.0.0"
+        }
+    ],
     "extension_points": [],
     "data": {
         "tables": []

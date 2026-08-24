@@ -8,58 +8,52 @@
 
 ## Purpose
 
-Registers and resolves runtime capabilities so that consumers depend on contracts rather than concrete implementations.
-
-CapabilityRegistry is the capability resolution layer of the Base runtime. It is responsible for:
-
-- accepting capability provider registrations from packages and modules
-- maintaining a registry of available capabilities and their providers
-- resolving capability requests to the correct provider using version constraints
-- enforcing that security-critical capabilities fail closed when unavailable
-- supporting multiple providers for the same capability (strategy selection)
-- making capability availability observable for lifecycle validation
-
-## Capability Contract
-
-Consumers declare what they need:
-
-```json
-{ "capability": "notification.send", "version": "^1.0" }
-```
-
-Providers declare what they supply:
-
-```json
-{ "provides": [{ "capability": "notification.send", "version": "1.2.0" }] }
-```
-
-The registry resolves the binding. Consumers never depend on provider class names.
+Registers explicit provider definitions and resolves capability contracts without coupling consumers to provider implementations.
 
 ## Public Contracts
 
-No public contracts are defined yet. This is a skeleton package.
+- `Public\\Contracts\\CapabilityContract` marks capability implementations.
+- `Public\\Contracts\\CapabilityProviderContract` supplies a capability contract.
+- `Public\\Contracts\\CapabilityResolver` registers definitions and resolves requests.
+- `Public\\ValueObjects\\CapabilityName` validates capability identifiers.
+- `Public\\ValueObjects\\CapabilityVersion` validates and compares semantic versions.
+- `Public\\ValueObjects\\CapabilityProviderDefinition` carries provider metadata and strategy fields.
+- `Public\\ValueObjects\\CapabilityResolutionResult` describes resolved or optional-absent results.
+- Public exceptions report invalid definitions and fail-closed resolution failures.
 
-Future public contracts will be added under `Public/Contracts/`.
+Public contracts contain no Laravel dependencies.
+
+## Registration
+
+Registration is metadata-driven and records capability name, semantic version, provider contract, metadata, priority, and optional strategy key. The registry contains no hard-coded providers.
+
+## Resolution
+
+- A single compatible provider resolves.
+- Missing required capabilities fail closed.
+- Missing optional capabilities return an unresolved result.
+- Existing incompatible providers are rejected.
+- Multiple compatible providers are rejected unless an explicit strategy key uniquely selects one.
+
+## Version Foundation
+
+B2.3 supports exact versions and caret constraints. Full Composer-compatible semantic version solving is deferred.
+
+## Strategy Foundation
+
+Provider priority and strategy keys are retained in immutable definitions. Explicit strategy filtering is supported. Priority does not silently select among ambiguous providers until a complete deterministic strategy engine is approved.
 
 ## Capabilities Provided
 
-None declared yet.
+- `capability.resolve` version `1.0.0`.
 
 ## Dependencies
 
-None declared yet.
+None.
 
 ## Data Ownership
 
-No tables owned. CapabilityRegistry owns no persistent state.
-
-## Configuration
-
-No configuration yet.
-
-## Lifecycle
-
-CapabilityRegistry is not a user-facing feature module. It cannot be disabled independently.
+No tables or persistent state. Registrations live only in the in-memory registry instance.
 
 ## Testing
 
@@ -69,4 +63,4 @@ composer test -- --filter=CapabilityRegistry
 
 ## Status
 
-Skeleton only. Runtime implementation is deferred to future B2 tasks.
+B2.3 registration, version-aware resolution, optional absence, and strategy foundation implemented.

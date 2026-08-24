@@ -8,61 +8,30 @@
 
 ## Purpose
 
-Discovers and manages all extension points — contributors, decorators, strategies, and relation contributors — without modifying Base package source files.
+Provides the framework-free contracts and in-memory registration foundation for explicitly declared contributors, decorators, strategies, and metadata extensions.
 
-ExtensionRegistry is the extension management layer of the Base runtime. It is responsible for:
+Extension points declare their kind, accepted Public contract, and whether multiple contributions are permitted. Enabled extension definitions are validated atomically before their contributions become visible. Disabled definitions, unknown points, contract mismatches, duplicate identifiers, and single-contribution conflicts fail closed.
 
-- discovering extensions via package metadata and PHP attributes
-- registering contributors for permission, settings, navigation, and relation extension points
-- registering decorators that add project-owned behavior around Base capabilities
-- registering strategy implementations for multi-provider capabilities
-- ensuring that extensions targeting absent optional modules are safely skipped
-- providing a deterministic extension graph for the same project definition
+## Resolution
 
-## Extension Model
+Point lookup uses the exact registered name. Contribution collections are deterministic: higher priority first, followed by extension ID and contribution ID in lexical order.
 
-Base packages expose extension contracts. Projects provide implementations. The registry never depends on project-specific code.
+The `ExtensionMetadata` attribute is passive declaration metadata only. B2.4 does not provide reflection scanning, extension discovery, decorator execution, strategy selection, runtime boot orchestration, or persistence.
 
-```
-Base Package
-    ↓
-Public Extension Contract
-    ↓
-Project Extension
-```
+## Public Boundary
 
-## Public Contracts
+Public contracts, definitions, exceptions, and attribute metadata live under `Public/`. They contain no Laravel types. Laravel coupling is limited to the package service provider, which binds the Public registry contract to the in-memory implementation.
 
-No public contracts are defined yet. This is a skeleton package.
+## Capability
 
-Future public contracts will be added under `Public/Contracts/`.
+- `extension.registry` version `1.0.0`
 
-## Capabilities Provided
+## Dependencies and Data
 
-None declared yet.
-
-## Dependencies
-
-None declared yet.
-
-## Data Ownership
-
-No tables owned. ExtensionRegistry owns no persistent state.
-
-## Configuration
-
-No configuration yet.
-
-## Lifecycle
-
-ExtensionRegistry is not a user-facing feature module. It cannot be disabled independently.
+The package has no package dependency and owns no tables.
 
 ## Testing
 
 ```bash
 composer test -- --filter=ExtensionRegistry
 ```
-
-## Status
-
-Skeleton only. Runtime implementation is deferred to future B2 tasks.
