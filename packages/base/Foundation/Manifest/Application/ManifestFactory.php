@@ -8,6 +8,7 @@ use Base\Foundation\Manifest\Public\Exceptions\InvalidManifest;
 use Base\Foundation\Manifest\Public\ValueObjects\Manifest;
 use Base\Foundation\Manifest\Public\ValueObjects\ManifestCapability;
 use Base\Foundation\Manifest\Public\ValueObjects\ManifestDependency;
+use Base\Foundation\SharedKernel\Public\ValueObjects\SemanticVersion;
 
 final class ManifestFactory
 {
@@ -43,7 +44,7 @@ final class ManifestFactory
             $errors[] = 'category must be one of: '.implode(', ', self::CATEGORIES);
         }
 
-        if ($version !== '' && ! $this->isSemanticVersion($version)) {
+        if ($version !== '' && ! SemanticVersion::isValid($version)) {
             $errors[] = 'version must use semantic versioning';
         }
 
@@ -181,11 +182,11 @@ final class ManifestFactory
                 $errors[] = sprintf('provides.%d.capability must be a non-empty string', $index);
             }
 
-            if ($version === null || ! $this->isSemanticVersion($version)) {
+            if ($version === null || ! SemanticVersion::isValid($version)) {
                 $errors[] = sprintf('provides.%d.version must use semantic versioning', $index);
             }
 
-            if ($capability === null || $version === null || ! $this->isSemanticVersion($version)) {
+            if ($capability === null || $version === null || ! SemanticVersion::isValid($version)) {
                 continue;
             }
 
@@ -198,14 +199,6 @@ final class ManifestFactory
     private function nonEmptyString(mixed $value): ?string
     {
         return is_string($value) && trim($value) !== '' ? $value : null;
-    }
-
-    private function isSemanticVersion(string $version): bool
-    {
-        return preg_match(
-            '/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/',
-            $version,
-        ) === 1;
     }
 
     private function isNamespace(string $namespace): bool

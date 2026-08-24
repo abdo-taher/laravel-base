@@ -1,23 +1,18 @@
 {
-    "name": "Manifest",
+    "name": "SharedKernel",
     "category": "Foundation",
     "version": "0.1.0",
     "ownership": "base-owned",
-    "description": "Parses, validates, and hydrates module.json manifests into runtime objects.",
-    "namespace": "Base\\Foundation\\Manifest",
+    "description": "Minimal set of domain-neutral, stable primitives shared across Base Foundation packages. Must remain extremely small.",
+    "namespace": "Base\\Foundation\\SharedKernel",
     "dependencies": {
-        "required": [
-            {
-                "package": "SharedKernel",
-                "version": "^0.1"
-            }
-        ],
+        "required": [],
         "optional": []
     },
     "provides": [
         {
-            "capability": "manifest.read",
-            "version": "1.0.0"
+            "capability": "shared.kernel",
+            "version": "0.1.0"
         }
     ],
     "extension_points": [],

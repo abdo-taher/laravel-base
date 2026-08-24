@@ -5,7 +5,18 @@ declare(strict_types=1);
 namespace Base\Foundation\CapabilityRegistry\Public\ValueObjects;
 
 use Base\Foundation\CapabilityRegistry\Public\Exceptions\InvalidCapabilityDefinition;
+use Base\Foundation\SharedKernel\Public\Exceptions\InvalidSemanticVersion;
+use Base\Foundation\SharedKernel\Public\ValueObjects\SemanticVersion;
 
+/**
+ * Semantic version for a capability provider.
+ *
+ * Delegates parsing and validation to the SharedKernel SemanticVersion
+ * primitive, which is the single source of truth for semver across all
+ * Base Foundation packages.
+ *
+ * Public API is unchanged from B2: major, minor, patch, compareTo().
+ */
 final readonly class CapabilityVersion
 {
     public int $major;
@@ -16,17 +27,15 @@ final readonly class CapabilityVersion
 
     public function __construct(public string $value)
     {
-        if (preg_match(
-            '/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/',
-            $value,
-            $parts,
-        ) !== 1) {
+        try {
+            $parsed = SemanticVersion::from($value);
+        } catch (InvalidSemanticVersion) {
             throw new InvalidCapabilityDefinition(sprintf('Invalid capability version: %s', $value));
         }
 
-        $this->major = (int) $parts[1];
-        $this->minor = (int) $parts[2];
-        $this->patch = (int) $parts[3];
+        $this->major = $parsed->major;
+        $this->minor = $parsed->minor;
+        $this->patch = $parsed->patch;
     }
 
     public function compareTo(self $other): int

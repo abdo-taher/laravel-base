@@ -6,7 +6,12 @@
     "description": "Registers and resolves versioned runtime capabilities through explicit provider definitions.",
     "namespace": "Base\\Foundation\\CapabilityRegistry",
     "dependencies": {
-        "required": [],
+        "required": [
+            {
+                "package": "SharedKernel",
+                "version": "^0.1"
+            }
+        ],
         "optional": []
     },
     "provides": [

@@ -45,6 +45,9 @@ return static function (DeptracConfig $config): void {
                 DirectoryConfig::create('tests/.*'),
             ),
             // ── Base Foundation layers ──────────────────────────────────────
+            $baseSharedKernel = Layer::withName('Base.Foundation.SharedKernel')->collectors(
+                DirectoryConfig::create('packages/base/Foundation/SharedKernel/.*'),
+            ),
             $baseModuleManager = Layer::withName('Base.Foundation.ModuleManager')->collectors(
                 DirectoryConfig::create('packages/base/Foundation/ModuleManager/.*'),
             ),
@@ -89,12 +92,16 @@ return static function (DeptracConfig $config): void {
                     $bootstrap,
                     $database,
                     $routes,
+                    $baseSharedKernel,
                     $baseModuleManager,
                     $baseManifest,
                     $baseCapabilityRegistry,
                     $baseDependencyResolver,
                     $baseExtensionRegistry,
                 ),
+
+            // SharedKernel is the lowest layer — no dependencies on other Foundation packages.
+            Ruleset::forLayer($baseSharedKernel),
 
             // ModuleManager orchestrates across all other Foundation packages.
             // It may only access their Public contracts, not internal layers.
@@ -105,8 +112,10 @@ return static function (DeptracConfig $config): void {
                     $baseDependencyResolver,
                     $baseExtensionRegistry,
                 ),
-            Ruleset::forLayer($baseManifest),
-            Ruleset::forLayer($baseCapabilityRegistry),
+            Ruleset::forLayer($baseManifest)
+                ->accesses($baseSharedKernel),
+            Ruleset::forLayer($baseCapabilityRegistry)
+                ->accesses($baseSharedKernel),
             Ruleset::forLayer($baseDependencyResolver)
                 ->accesses($baseManifest),
             Ruleset::forLayer($baseExtensionRegistry),
