@@ -22,7 +22,7 @@ Product modules use the canonical namespace `Modules\<ModuleName>\` (e.g., `Modu
 - **Cannot depend on**: Internals of any module.
 - **Reverse Dependency**: Base packages (Foundation/Platform/Specialized) must NEVER depend on any Product module.
 - Circular dependencies between Product modules are strictly forbidden.
-- **Required vs Optional Dependencies**: 
+- **Required vs Optional Dependencies**:
   - If a declared required Product dependency is absent, composition/boot must explicitly fail.
   - If an optional integration is absent, the consuming module must remain valid and handle the absence gracefully.
 
@@ -52,7 +52,7 @@ Not all Domain Events are exposed automatically. B6 will not introduce a new Eve
 Product modules integrate with Identity via pure IDs (e.g., UUIDs) or Public Principal contracts. Product modules must not import or rely on Eloquent relations to `App\Models\User` or internal Identity infrastructure.
 
 ## 11. AccessControl Integration
-Product modules own their specific business permission vocabulary. Permission registration is performed explicitly/manually through the Foundation's existing `PermissionContributor` boundary. 
+Product modules own their specific business permission vocabulary. Permission registration is performed explicitly/manually through the Foundation's existing `PermissionContributor` boundary.
 - No Product permissions belong hard-coded inside `Foundation.AccessControl`.
 - Automatic ExtensionRegistry/CapabilityRegistry discovery for permissions remains deferred unless a concrete runtime consumer requires it.
 

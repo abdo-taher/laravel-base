@@ -10,7 +10,6 @@ use Base\Platform\Media\Infrastructure\Database\MediaItem;
 use Base\Platform\Media\Public\Contracts\MediaCleaner;
 use Base\Platform\Media\Public\Contracts\MediaSynchronizer;
 use Base\Platform\Media\Public\Contracts\MediaUploader;
-use Base\Platform\Media\Public\Exceptions\InvalidMediaReference;
 use Base\Platform\Media\Public\Exceptions\MediaReferenceNotFound;
 use Base\Platform\Media\Public\Exceptions\MediaSlotViolation;
 use Base\Platform\Media\Public\Exceptions\MediaUploadFailed;
@@ -18,29 +17,26 @@ use Base\Platform\Media\Public\ValueObjects\MediaAccessScope;
 use Base\Platform\Media\Public\ValueObjects\MediaOwnerReference;
 use Base\Platform\Media\Public\ValueObjects\MediaReference;
 use Base\Platform\Media\Public\ValueObjects\MediaSlotChanges;
-use Base\Platform\Media\Public\ValueObjects\MediaSlotDefinition;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-final class MediaApplicationService implements MediaUploader, MediaSynchronizer, MediaCleaner
+final class MediaApplicationService implements MediaCleaner, MediaSynchronizer, MediaUploader
 {
-    public function __construct(private readonly FileStorage $storage)
-    {
-    }
+    public function __construct(private readonly FileStorage $storage) {}
 
     public function upload(mixed $stream, string $originalName, MediaAccessScope $scope): MediaReference
     {
         try {
             $mimeType = 'application/octet-stream';
             $size = 0;
-            
+
             $safeOriginalName = basename($originalName);
 
             if (is_resource($stream)) {
                 $stat = fstat($stream);
                 $size = $stat['size'] ?? 0;
-                
+
                 if (function_exists('finfo_open')) {
                     $finfo = finfo_open(FILEINFO_MIME_TYPE);
                     if ($finfo !== false) {
@@ -70,15 +66,15 @@ final class MediaApplicationService implements MediaUploader, MediaSynchronizer,
             }
 
             $entropy = bin2hex(random_bytes(16));
-            $reference = 'med_' . strtolower($entropy);
-            $storageKeyStr = 'media/' . $entropy;
+            $reference = 'med_'.strtolower($entropy);
+            $storageKeyStr = 'media/'.$entropy;
             $storageKey = new StorageKey($storageKeyStr);
 
             $this->storage->write($storageKey, $stream);
         } catch (Throwable $e) {
             throw MediaUploadFailed::transport($e);
         }
-        
+
         try {
             MediaItem::create([
                 'reference' => $reference,
@@ -131,20 +127,21 @@ final class MediaApplicationService implements MediaUploader, MediaSynchronizer,
                             'orphaned_at' => Carbon::now(),
                         ]);
                     }
+
                     continue;
                 }
 
-                $requestedRefs = array_map(fn(MediaReference $r) => $r->value, $change->references ?? []);
-                
+                $requestedRefs = array_map(fn (MediaReference $r) => $r->value, $change->references ?? []);
+
                 if (count($requestedRefs) !== count(array_unique($requestedRefs))) {
                     throw MediaSlotViolation::duplicateReference('Duplicate reference detected in payload.');
                 }
-                
+
                 if ($definition->isMultiple && $definition->maxItems !== null && count($requestedRefs) > $definition->maxItems) {
                     throw MediaSlotViolation::invalidCardinality($definition->name->value, "Exceeds max items {$definition->maxItems}");
                 }
-                if (!$definition->isMultiple && count($requestedRefs) > 1) {
-                    throw MediaSlotViolation::invalidCardinality($definition->name->value, "Single slot cannot accept multiple references.");
+                if (! $definition->isMultiple && count($requestedRefs) > 1) {
+                    throw MediaSlotViolation::invalidCardinality($definition->name->value, 'Single slot cannot accept multiple references.');
                 }
 
                 // Incoming references - explicitly ordered to prevent deadlocks
@@ -153,31 +150,31 @@ final class MediaApplicationService implements MediaUploader, MediaSynchronizer,
                     ->lockForUpdate()
                     ->get()
                     ->keyBy('reference');
-                
+
                 // PREVALIDATION PHASE
                 foreach ($requestedRefs as $refStr) {
                     $item = $incoming->get($refStr);
-                    
+
                     if ($item === null) {
                         throw MediaReferenceNotFound::fromString($refStr);
                     }
-                    
+
                     if ($existing->has($refStr)) {
                         continue;
                     }
-                    
+
                     if ($item->state !== MediaItem::STATE_TEMPORARY) {
                         throw MediaSlotViolation::scopeMismatch($refStr);
                     }
-                    
+
                     if ($item->upload_scope !== $scope->value) {
                         throw MediaSlotViolation::scopeMismatch($refStr);
                     }
-                    
-                    if (!empty($definition->allowedMimeTypes) && !in_array($item->mime_type, $definition->allowedMimeTypes, true)) {
+
+                    if (! empty($definition->allowedMimeTypes) && ! in_array($item->mime_type, $definition->allowedMimeTypes, true)) {
                         throw MediaSlotViolation::invalidMime($refStr, implode(', ', $definition->allowedMimeTypes));
                     }
-                    
+
                     if ($definition->maxSizeBytes !== null && $item->size > $definition->maxSizeBytes) {
                         throw MediaSlotViolation::invalidSize($refStr, $definition->maxSizeBytes);
                     }
@@ -185,7 +182,7 @@ final class MediaApplicationService implements MediaUploader, MediaSynchronizer,
 
                 // MUTATION PHASE
                 foreach ($existing as $refStr => $item) {
-                    if (!in_array($refStr, $requestedRefs, true)) {
+                    if (! in_array($refStr, $requestedRefs, true)) {
                         $item->update([
                             'state' => MediaItem::STATE_ORPHANED,
                             'owner_type' => null,
@@ -196,7 +193,7 @@ final class MediaApplicationService implements MediaUploader, MediaSynchronizer,
                         ]);
                     }
                 }
-                
+
                 $order = 0;
                 foreach ($requestedRefs as $refStr) {
                     $item = $incoming->get($refStr);
@@ -219,15 +216,15 @@ final class MediaApplicationService implements MediaUploader, MediaSynchronizer,
     public function cleanExpired(int $ttlSeconds): int
     {
         $threshold = Carbon::now()->subSeconds($ttlSeconds);
-        
+
         $orphaned = MediaItem::where('state', MediaItem::STATE_ORPHANED)
             ->where('orphaned_at', '<', $threshold)
             ->get();
-            
+
         $temporary = MediaItem::where('state', MediaItem::STATE_TEMPORARY)
             ->where('created_at', '<', $threshold)
             ->get();
-            
+
         $count = 0;
         foreach ($orphaned->concat($temporary) as $item) {
             try {
@@ -238,7 +235,7 @@ final class MediaApplicationService implements MediaUploader, MediaSynchronizer,
                 // Ignore if storage delete fails
             }
         }
-        
+
         return $count;
     }
 }
