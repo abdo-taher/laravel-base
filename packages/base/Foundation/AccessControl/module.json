@@ -1,0 +1,41 @@
+{
+    "name": "AccessControl",
+    "category": "Foundation",
+    "version": "0.1.0",
+    "ownership": "base-owned",
+    "description": "Authorization evaluation infrastructure. Owns the authorization boundary: permission evaluation, policy aggregation, and contributor contracts. Does not own business-specific permission names, roles, or product authorization rules.",
+    "namespace": "Base\\Foundation\\AccessControl",
+    "dependencies": {
+        "required": [
+            {
+                "capability": "identity.current-principal",
+                "version": "^0.1.0"
+            }
+        ],
+        "optional": []
+    },
+    "provides": [
+        {
+            "capability": "access-control.evaluator",
+            "version": "0.1.0"
+        }
+    ],
+    "extension_points": [
+        "access-control.permission-contributor",
+        "access-control.authorization-policy"
+    ],
+    "data": {
+        "tables": []
+    },
+    "events": {
+        "publishes": [],
+        "consumes": []
+    },
+    "lifecycle": {
+        "enableable": false,
+        "disable_policy": "not-applicable"
+    },
+    "security": {
+        "classification": "critical"
+    }
+}

@@ -48,6 +48,12 @@ return static function (DeptracConfig $config): void {
             $baseSharedKernel = Layer::withName('Base.Foundation.SharedKernel')->collectors(
                 DirectoryConfig::create('packages/base/Foundation/SharedKernel/.*'),
             ),
+            $baseConfiguration = Layer::withName('Base.Foundation.Configuration')->collectors(
+                DirectoryConfig::create('packages/base/Foundation/Configuration/.*'),
+            ),
+            $baseIdentity = Layer::withName('Base.Foundation.Identity')->collectors(
+                DirectoryConfig::create('packages/base/Foundation/Identity/.*'),
+            ),
             $baseModuleManager = Layer::withName('Base.Foundation.ModuleManager')->collectors(
                 DirectoryConfig::create('packages/base/Foundation/ModuleManager/.*'),
             ),
@@ -62,6 +68,9 @@ return static function (DeptracConfig $config): void {
             ),
             $baseExtensionRegistry = Layer::withName('Base.Foundation.ExtensionRegistry')->collectors(
                 DirectoryConfig::create('packages/base/Foundation/ExtensionRegistry/.*'),
+            ),
+            $baseAccessControl = Layer::withName('Base.Foundation.AccessControl')->collectors(
+                DirectoryConfig::create('packages/base/Foundation/AccessControl/.*'),
             ),
         )
         ->rulesets(
@@ -93,15 +102,31 @@ return static function (DeptracConfig $config): void {
                     $database,
                     $routes,
                     $baseSharedKernel,
+                    $baseConfiguration,
+                    $baseIdentity,
                     $baseModuleManager,
                     $baseManifest,
                     $baseCapabilityRegistry,
                     $baseDependencyResolver,
                     $baseExtensionRegistry,
+                    $baseAccessControl,
                 ),
 
             // SharedKernel is the lowest layer — no dependencies on other Foundation packages.
             Ruleset::forLayer($baseSharedKernel),
+
+            // Configuration has no Foundation package dependencies.
+            // Infrastructure layer uses Illuminate\Contracts only (not tracked by Deptrac
+            // since vendor is excluded).
+            Ruleset::forLayer($baseConfiguration),
+
+            // Identity has no Foundation package dependencies.
+            // Infrastructure layer uses Illuminate\Contracts\Auth only (vendor excluded).
+            Ruleset::forLayer($baseIdentity),
+
+            // AccessControl depends on Identity Public contracts (Principal value objects).
+            Ruleset::forLayer($baseAccessControl)
+                ->accesses($baseIdentity),
 
             // ModuleManager orchestrates across all other Foundation packages.
             // It may only access their Public contracts, not internal layers.
