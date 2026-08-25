@@ -1,0 +1,37 @@
+{
+    "name": "Health",
+    "category": "Foundation",
+    "version": "0.1.0",
+    "ownership": "base-owned",
+    "description": "Provides framework-independent boundaries for liveness, readiness, and detailed health reporting.",
+    "namespace": "Base\\Foundation\\Health",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "provides": [
+        {
+            "capability": "health.registry",
+            "version": "0.1.0"
+        },
+        {
+            "capability": "health.reporter",
+            "version": "0.1.0"
+        }
+    ],
+    "extension_points": [],
+    "data": {
+        "tables": []
+    },
+    "events": {
+        "publishes": [],
+        "consumes": []
+    },
+    "lifecycle": {
+        "enableable": false,
+        "disable_policy": "not-applicable"
+    },
+    "security": {
+        "classification": "internal"
+    }
+}

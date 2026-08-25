@@ -2,32 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Base\Foundation\Audit\Public\ValueObjects;
+namespace Base\Foundation\Health\Public\ValueObjects;
 
 use InvalidArgumentException;
 
 /**
- * Immutable metadata associated with an audit event.
+ * Immutable metadata for health check results.
  *
- * Rejects arbitrary PHP objects, resources, and closures to prevent
- * accidental domain model leakage or secret capture (e.g. avoiding
- * serialization of framework models with hidden attributes).
+ * Enforces strict structured validation to prevent domain model leakage.
+ * Rejects objects, closures, resources, and non-string keys.
  *
- * IMPORTANT: This mechanism prevents unsafe object/model serialization
- * but does NOT guarantee secret safety for scalar values. Callers MUST
- * explicitly avoid including:
- * - passwords
- * - tokens
- * - API keys
- * - authorization headers
- * - any other secrets
- *
- * Only null, bool, int, float, string, and nested arrays with string keys
- * are permitted.
- *
- * No framework dependencies.
+ * IMPORTANT: This DOES NOT automatically redact scalar secrets.
+ * Callers MUST ensure that the following are NOT included:
+ * - password
+ * - token
+ * - api_key
+ * - connection string
+ * - authorization header
  */
-final readonly class Metadata
+final readonly class HealthMetadata
 {
     /**
      * @param  array<string, mixed>  $values
@@ -43,12 +36,11 @@ final readonly class Metadata
     private function validateValues(array $data, string $currentPath): void
     {
         foreach ($data as $key => $value) {
-            if (! is_string($key)) {
+            if (! is_string($key) || trim($key) === '') {
                 throw new InvalidArgumentException(
                     sprintf(
-                        'Invalid metadata key type at path "%s". Only string keys are allowed in metadata arrays, got %s.',
-                        $currentPath === '' ? 'root' : $currentPath,
-                        get_debug_type($key)
+                        'HealthMetadata keys must be non-empty strings. Invalid key at path "%s".',
+                        $currentPath === '' ? 'root' : $currentPath
                     )
                 );
             }
@@ -72,7 +64,7 @@ final readonly class Metadata
 
         throw new InvalidArgumentException(
             sprintf(
-                'Invalid metadata value at path "%s". Only scalars, nulls, and nested arrays are permitted. Got: %s',
+                'Invalid HealthMetadata value at path "%s". Only scalars, nulls, and nested arrays are permitted. Got: %s',
                 $path,
                 get_debug_type($value)
             )

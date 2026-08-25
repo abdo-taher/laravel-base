@@ -1,0 +1,43 @@
+{
+    "name": "Identity",
+    "category": "Foundation",
+    "version": "0.1.0",
+    "ownership": "base-owned",
+    "description": "Authentication identity and principal primitives. Owns the authenticated actor boundary. Does not own roles, permissions, authorization, or business profile fields.",
+    "namespace": "Base\\Foundation\\Identity",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "provides": [
+        {
+            "capability": "identity.current-principal",
+            "version": "0.1.0"
+        },
+        {
+            "capability": "identity.authenticate",
+            "version": "0.1.0"
+        }
+    ],
+    "extension_points": [
+        "identity.principal-enricher"
+    ],
+    "data": {
+        "tables": [
+            "users",
+            "password_reset_tokens",
+            "sessions"
+        ]
+    },
+    "events": {
+        "publishes": [],
+        "consumes": []
+    },
+    "lifecycle": {
+        "enableable": false,
+        "disable_policy": "preserve-data"
+    },
+    "security": {
+        "classification": "critical"
+    }
+}

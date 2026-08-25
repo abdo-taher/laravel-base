@@ -1,0 +1,33 @@
+{
+    "name": "Security",
+    "category": "Foundation",
+    "version": "0.1.0",
+    "ownership": "base-owned",
+    "description": "Minimal, reusable technical security primitives (SensitiveValue, SecureTokenGenerator, SecureCompare).",
+    "namespace": "Base\\Foundation\\Security",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "provides": [
+        {
+            "capability": "security.tokens",
+            "version": "0.1.0"
+        }
+    ],
+    "extension_points": [],
+    "data": {
+        "tables": []
+    },
+    "events": {
+        "publishes": [],
+        "consumes": []
+    },
+    "lifecycle": {
+        "enableable": false,
+        "disable_policy": "not-applicable"
+    },
+    "security": {
+        "classification": "internal"
+    }
+}

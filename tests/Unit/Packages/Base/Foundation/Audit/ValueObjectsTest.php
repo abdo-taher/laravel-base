@@ -116,10 +116,10 @@ final class ValueObjectsTest extends TestCase
     {
         $resource = fopen('php://memory', 'r');
         self::assertIsResource($resource);
-        
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid metadata value at path "res"');
-        
+
         try {
             new Metadata(['res' => $resource]);
         } finally {
@@ -131,7 +131,7 @@ final class ValueObjectsTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid metadata value at path "closure"');
-        
+
         new Metadata(['closure' => function () {}]);
     }
 
@@ -161,14 +161,14 @@ final class ValueObjectsTest extends TestCase
     public function test_audit_event_rejects_empty_id(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new AuditEvent('', new Action('a'), new DateTimeImmutable());
+        new AuditEvent('', new Action('a'), new DateTimeImmutable);
     }
 
     public function test_audit_event_rejects_whitespace_only_id(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Event ID must be a non-empty string.');
-        new AuditEvent('   ', new Action('a'), new DateTimeImmutable());
+        new AuditEvent('   ', new Action('a'), new DateTimeImmutable);
     }
 
     // ── SystemClock ────────────────────────────────────────────────────────

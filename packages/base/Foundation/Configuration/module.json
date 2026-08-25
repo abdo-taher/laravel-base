@@ -1,0 +1,35 @@
+{
+    "name": "Configuration",
+    "category": "Foundation",
+    "version": "0.1.0",
+    "ownership": "base-owned",
+    "description": "Framework-independent typed configuration Foundation. Owns retrieval, source composition, precedence, and validation. Does not own any package-specific configuration vocabulary.",
+    "namespace": "Base\\Foundation\\Configuration",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "provides": [
+        {
+            "capability": "configuration.read",
+            "version": "0.1.0"
+        }
+    ],
+    "extension_points": [
+        "configuration.source.contributor"
+    ],
+    "data": {
+        "tables": []
+    },
+    "events": {
+        "publishes": [],
+        "consumes": []
+    },
+    "lifecycle": {
+        "enableable": false,
+        "disable_policy": "not-applicable"
+    },
+    "security": {
+        "classification": "internal"
+    }
+}

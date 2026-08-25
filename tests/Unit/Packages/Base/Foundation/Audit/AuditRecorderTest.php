@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Packages\Base\Foundation\Audit;
 
 use Base\Foundation\Audit\Application\InMemoryAuditRecorder;
+use Base\Foundation\Audit\Public\Contracts\AuditRecorder;
 use Base\Foundation\Audit\Public\Exceptions\AuditRecordingFailed;
 use Base\Foundation\Audit\Public\ValueObjects\Action;
 use Base\Foundation\Audit\Public\ValueObjects\AuditEvent;
@@ -56,14 +57,15 @@ final class AuditRecorderTest extends TestCase
     public function test_caller_can_handle_recorder_failure_explicitly(): void
     {
         // Simulate a failing recorder
-        $failingRecorder = new class implements \Base\Foundation\Audit\Public\Contracts\AuditRecorder {
+        $failingRecorder = new class implements AuditRecorder
+        {
             public function record(AuditEvent $event): void
             {
                 throw AuditRecordingFailed::forEvent($event->eventId, new \Exception('Disk full'));
             }
         };
 
-        $event = new AuditEvent('evt-fail', new Action('test'), new DateTimeImmutable());
+        $event = new AuditEvent('evt-fail', new Action('test'), new DateTimeImmutable);
 
         $handled = false;
         try {

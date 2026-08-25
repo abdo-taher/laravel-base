@@ -1,0 +1,41 @@
+{
+    "name": "Observability",
+    "category": "Foundation",
+    "version": "0.1.0",
+    "ownership": "base-owned",
+    "description": "Provides framework-independent logging, metrics, and tracing boundaries.",
+    "namespace": "Base\\Foundation\\Observability",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "provides": [
+        {
+            "capability": "observability.logger",
+            "version": "0.1.0"
+        },
+        {
+            "capability": "observability.metrics",
+            "version": "0.1.0"
+        },
+        {
+            "capability": "observability.tracer",
+            "version": "0.1.0"
+        }
+    ],
+    "extension_points": [],
+    "data": {
+        "tables": []
+    },
+    "events": {
+        "publishes": [],
+        "consumes": []
+    },
+    "lifecycle": {
+        "enableable": false,
+        "disable_policy": "not-applicable"
+    },
+    "security": {
+        "classification": "internal"
+    }
+}

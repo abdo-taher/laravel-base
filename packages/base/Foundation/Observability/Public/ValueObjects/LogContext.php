@@ -2,32 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Base\Foundation\Audit\Public\ValueObjects;
+namespace Base\Foundation\Observability\Public\ValueObjects;
 
 use InvalidArgumentException;
 
 /**
- * Immutable metadata associated with an audit event.
+ * Ensures structured log contexts do not accidentally capture or leak
+ * domain models, resources, or closures.
  *
- * Rejects arbitrary PHP objects, resources, and closures to prevent
- * accidental domain model leakage or secret capture (e.g. avoiding
- * serialization of framework models with hidden attributes).
- *
- * IMPORTANT: This mechanism prevents unsafe object/model serialization
- * but does NOT guarantee secret safety for scalar values. Callers MUST
- * explicitly avoid including:
- * - passwords
- * - tokens
- * - API keys
- * - authorization headers
- * - any other secrets
- *
- * Only null, bool, int, float, string, and nested arrays with string keys
- * are permitted.
+ * IMPORTANT: This rejects objects to prevent accidental serialization
+ * (e.g. Eloquent models), but it DOES NOT automatically redact scalar secrets.
+ * Callers MUST ensure that the following are NOT included in this context:
+ * - password
+ * - token
+ * - api_key
+ * - authorization header
  *
  * No framework dependencies.
  */
-final readonly class Metadata
+final readonly class LogContext
 {
     /**
      * @param  array<string, mixed>  $values
@@ -46,9 +39,8 @@ final readonly class Metadata
             if (! is_string($key)) {
                 throw new InvalidArgumentException(
                     sprintf(
-                        'Invalid metadata key type at path "%s". Only string keys are allowed in metadata arrays, got %s.',
-                        $currentPath === '' ? 'root' : $currentPath,
-                        get_debug_type($key)
+                        'LogContext keys must be strings. Invalid key at path "%s".',
+                        $currentPath === '' ? 'root' : $currentPath
                     )
                 );
             }
@@ -72,7 +64,7 @@ final readonly class Metadata
 
         throw new InvalidArgumentException(
             sprintf(
-                'Invalid metadata value at path "%s". Only scalars, nulls, and nested arrays are permitted. Got: %s',
+                'Invalid LogContext value at path "%s". Only scalars, nulls, and nested arrays are permitted. Got: %s',
                 $path,
                 get_debug_type($value)
             )
