@@ -69,6 +69,9 @@ return static function (DeptracConfig $config): void {
             $baseExtensionRegistry = Layer::withName('Base.Foundation.ExtensionRegistry')->collectors(
                 DirectoryConfig::create('packages/base/Foundation/ExtensionRegistry/.*'),
             ),
+            $baseAudit = Layer::withName('Base.Foundation.Audit')->collectors(
+                DirectoryConfig::create('packages/base/Foundation/Audit/.*'),
+            ),
             $baseAccessControl = Layer::withName('Base.Foundation.AccessControl')->collectors(
                 DirectoryConfig::create('packages/base/Foundation/AccessControl/.*'),
             ),
@@ -110,6 +113,7 @@ return static function (DeptracConfig $config): void {
                     $baseDependencyResolver,
                     $baseExtensionRegistry,
                     $baseAccessControl,
+                    $baseAudit,
                 ),
 
             // SharedKernel is the lowest layer — no dependencies on other Foundation packages.
@@ -125,6 +129,10 @@ return static function (DeptracConfig $config): void {
             Ruleset::forLayer($baseIdentity),
 
             // AccessControl depends on Identity Public contracts (Principal value objects).
+            // Audit depends on Identity Public contracts (Principal value objects).
+            Ruleset::forLayer($baseAudit)
+                ->accesses($baseIdentity),
+
             Ruleset::forLayer($baseAccessControl)
                 ->accesses($baseIdentity),
 

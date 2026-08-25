@@ -1,0 +1,38 @@
+{
+    "name": "Audit",
+    "category": "Foundation",
+    "version": "0.1.0",
+    "ownership": "base-owned",
+    "description": "Immutable audit event recording. Provides generic contracts for capturing who did what, when, and with what context. Does not own business actions or complex query APIs.",
+    "namespace": "Base\\Foundation\\Audit",
+    "dependencies": {
+        "required": [
+            {
+                "capability": "identity.current-principal",
+                "version": "^0.1.0"
+            }
+        ],
+        "optional": []
+    },
+    "provides": [
+        {
+            "capability": "audit.recorder",
+            "version": "0.1.0"
+        }
+    ],
+    "extension_points": [],
+    "data": {
+        "tables": []
+    },
+    "events": {
+        "publishes": [],
+        "consumes": []
+    },
+    "lifecycle": {
+        "enableable": false,
+        "disable_policy": "not-applicable"
+    },
+    "security": {
+        "classification": "critical"
+    }
+}
