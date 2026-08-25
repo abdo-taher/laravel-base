@@ -1,0 +1,37 @@
+{
+    "name": "Settings",
+    "category": "Platform",
+    "version": "0.1.0",
+    "ownership": "base-owned",
+    "description": "Provides a strongly-typed, runtime-adjustable global configuration store for project settings.",
+    "namespace": "Base\\Platform\\Settings",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "provides": [
+        {
+            "capability": "settings.runtime",
+            "version": "0.1.0"
+        }
+    ],
+    "extension_points": [
+        "settings.contributor"
+    ],
+    "data": {
+        "tables": [
+            "settings"
+        ]
+    },
+    "events": {
+        "publishes": [],
+        "consumes": []
+    },
+    "lifecycle": {
+        "enableable": false,
+        "disable_policy": "preserve-data"
+    },
+    "security": {
+        "classification": "internal"
+    }
+}

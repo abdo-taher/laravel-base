@@ -1,0 +1,33 @@
+{
+    "name": "Files",
+    "category": "Platform",
+    "version": "0.1.0",
+    "ownership": "base-owned",
+    "description": "Provides a generic, framework-independent file and object storage capability.",
+    "namespace": "Base\\Platform\\Files",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "provides": [
+        {
+            "capability": "files.storage",
+            "version": "0.1.0"
+        }
+    ],
+    "extension_points": [],
+    "data": {
+        "tables": []
+    },
+    "events": {
+        "publishes": [],
+        "consumes": []
+    },
+    "lifecycle": {
+        "enableable": false,
+        "disable_policy": "preserve-data"
+    },
+    "security": {
+        "classification": "internal"
+    }
+}

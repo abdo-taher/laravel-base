@@ -84,6 +84,13 @@ return static function (DeptracConfig $config): void {
             $baseAccessControl = Layer::withName('Base.Foundation.AccessControl')->collectors(
                 DirectoryConfig::create('^packages/base/Foundation/AccessControl/.*'),
             ),
+            // ── Base Platform layers ────────────────────────────────────────
+            $baseSettings = Layer::withName('Base.Platform.Settings')->collectors(
+                DirectoryConfig::create('^packages/base/Platform/Settings/.*'),
+            ),
+            $baseFiles = Layer::withName('Base.Platform.Files')->collectors(
+                DirectoryConfig::create('^packages/base/Platform/Files/.*'),
+            ),
         )
         ->rulesets(
             Ruleset::forLayer($hostHttp)
@@ -126,6 +133,8 @@ return static function (DeptracConfig $config): void {
                     $baseObservability,
                     $baseHealth,
                     $baseSecurity,
+                    $baseSettings,
+                    $baseFiles,
                 ),
 
             // SharedKernel is the lowest layer — no dependencies on other Foundation packages.
@@ -156,6 +165,10 @@ return static function (DeptracConfig $config): void {
 
             Ruleset::forLayer($baseAccessControl)
                 ->accesses($baseIdentity),
+
+            Ruleset::forLayer($baseSettings),
+
+            Ruleset::forLayer($baseFiles),
 
             // ModuleManager orchestrates across all other Foundation packages.
             // It may only access their Public contracts, not internal layers.
