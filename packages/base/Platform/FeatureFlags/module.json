@@ -1,0 +1,33 @@
+{
+    "name": "FeatureFlags",
+    "category": "Platform",
+    "version": "0.1.0",
+    "ownership": "base-owned",
+    "description": "Provides a generic, framework-independent boundary for semantic boolean feature toggle decisions.",
+    "namespace": "Base\\Platform\\FeatureFlags",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "provides": [
+        {
+            "capability": "feature-flags.evaluate",
+            "version": "0.1.0"
+        }
+    ],
+    "extension_points": [],
+    "data": {
+        "tables": []
+    },
+    "events": {
+        "publishes": [],
+        "consumes": []
+    },
+    "lifecycle": {
+        "enableable": false,
+        "disable_policy": "preserve-data"
+    },
+    "security": {
+        "classification": "internal"
+    }
+}
