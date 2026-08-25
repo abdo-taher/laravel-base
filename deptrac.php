@@ -97,6 +97,10 @@ return static function (DeptracConfig $config): void {
             $baseFeatureFlags = Layer::withName('Base.Platform.FeatureFlags')->collectors(
                 DirectoryConfig::create('^packages/base/Platform/FeatureFlags/.*'),
             ),
+            // ── Base Specialized layers ──────────────────────────────────────
+            $baseOutboundWebhooks = Layer::withName('Base.Specialized.OutboundWebhooks')->collectors(
+                DirectoryConfig::create('^packages/base/Specialized/OutboundWebhooks/.*'),
+            ),
         )
         ->rulesets(
             Ruleset::forLayer($hostHttp)
@@ -143,6 +147,7 @@ return static function (DeptracConfig $config): void {
                     $baseFiles,
                     $baseNotifications,
                     $baseFeatureFlags,
+                    $baseOutboundWebhooks,
                 ),
 
             // SharedKernel is the lowest layer — no dependencies on other Foundation packages.
@@ -181,6 +186,8 @@ return static function (DeptracConfig $config): void {
             Ruleset::forLayer($baseNotifications),
 
             Ruleset::forLayer($baseFeatureFlags),
+
+            Ruleset::forLayer($baseOutboundWebhooks),
 
             // ModuleManager orchestrates across all other Foundation packages.
             // It may only access their Public contracts, not internal layers.

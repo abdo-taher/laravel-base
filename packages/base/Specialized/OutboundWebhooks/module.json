@@ -1,0 +1,14 @@
+{
+    "name": "Base.Specialized.OutboundWebhooks",
+    "version": "0.1.0",
+    "category": "Specialized",
+    "ownership": "base-owned",
+    "namespace": "Base\\Specialized\\OutboundWebhooks\\",
+    "dependencies": [],
+    "capabilities": [
+        "outbound-webhooks.dispatch"
+    ],
+    "data": {
+        "tables": []
+    }
+}
