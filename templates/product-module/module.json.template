@@ -1,0 +1,16 @@
+{
+    "name": "Modules.{{MODULE_NAME}}",
+    "version": "0.1.0",
+    "category": "Product",
+    "ownership": "project-owned",
+    "namespace": "Modules\\{{MODULE_NAME}}",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "provides": [],
+    "extension_points": [],
+    "data": {
+        "tables": []
+    }
+}

@@ -1,0 +1,11 @@
+# Module: {{MODULE_NAME}}
+
+This is a project-owned Product module.
+
+## Architecture Guidelines
+- **Public Boundary**: Only classes in `Public/` may be imported by other modules.
+- **Internal Domains**: `Domain/`, `Application/`, `Infrastructure/`, `Presentation/`, `Database/` are strictly private to this module.
+- **Dependencies**: Declare required and optional module/capability dependencies in `module.json`.
+- **Persistence**: This module exclusively owns its tables. Do not import foreign Eloquent models or join across module boundaries.
+- **Routes & Migrations**: Defined and owned directly inside this module's directory.
+- **Removability**: If removed, dependent optional integrations degrade gracefully; required integrations cause composition failure. Base functionality is unharmed.

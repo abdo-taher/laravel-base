@@ -1,0 +1,22 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\{{MODULE_NAME}};
+
+use Illuminate\Support\ServiceProvider;
+
+final class {{MODULE_NAME}}ServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        // Bind module-owned Public contracts to Application adapters here.
+    }
+
+    public function boot(): void
+    {
+        // Load module-owned resources such as migrations, routes, or views.
+        $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
+        // $this->loadRoutesFrom(__DIR__.'/Presentation/Routes/api.php');
+    }
+}

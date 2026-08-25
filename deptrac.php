@@ -97,9 +97,19 @@ return static function (DeptracConfig $config): void {
             $baseFeatureFlags = Layer::withName('Base.Platform.FeatureFlags')->collectors(
                 DirectoryConfig::create('^packages/base/Platform/FeatureFlags/.*'),
             ),
+            $baseMedia = Layer::withName('Base.Platform.Media')->collectors(
+                DirectoryConfig::create('^packages/base/Platform/Media/.*'),
+            ),
             // ── Base Specialized layers ──────────────────────────────────────
             $baseOutboundWebhooks = Layer::withName('Base.Specialized.OutboundWebhooks')->collectors(
                 DirectoryConfig::create('^packages/base/Specialized/OutboundWebhooks/.*'),
+            ),
+            // ── Product layers (Project-owned) ───────────────────────────────
+            $productPublic = Layer::withName('Product.Public')->collectors(
+                DirectoryConfig::create('^modules/[^/]+/Public/.*'),
+            ),
+            $productInternal = Layer::withName('Product.Internal')->collectors(
+                DirectoryConfig::create('^modules/[^/]+/(?!Public/).*'),
             ),
         )
         ->rulesets(
@@ -147,7 +157,63 @@ return static function (DeptracConfig $config): void {
                     $baseFiles,
                     $baseNotifications,
                     $baseFeatureFlags,
+                    $baseMedia,
                     $baseOutboundWebhooks,
+                    $productPublic,
+                    $productInternal,
+                ),
+
+            // Note on Product-to-Product internal boundaries:
+            // Deptrac requires hard-coded module names to block ModuleA -> ModuleB internals.
+            // Since modules are dynamic, we group them into Product.Public and Product.Internal.
+            // A dedicated Pest architecture test validates the strict ModuleA -> ModuleB internal boundary.
+            Ruleset::forLayer($productPublic)
+                ->accesses(
+                    $baseSharedKernel,
+                    $baseConfiguration,
+                    $baseIdentity,
+                    $baseModuleManager,
+                    $baseManifest,
+                    $baseCapabilityRegistry,
+                    $baseDependencyResolver,
+                    $baseExtensionRegistry,
+                    $baseAccessControl,
+                    $baseAudit,
+                    $baseObservability,
+                    $baseHealth,
+                    $baseSecurity,
+                    $baseSettings,
+                    $baseFiles,
+                    $baseNotifications,
+                    $baseFeatureFlags,
+                    $baseMedia,
+                    $baseOutboundWebhooks,
+                    $productPublic,
+                ),
+
+            Ruleset::forLayer($productInternal)
+                ->accesses(
+                    $baseSharedKernel,
+                    $baseConfiguration,
+                    $baseIdentity,
+                    $baseModuleManager,
+                    $baseManifest,
+                    $baseCapabilityRegistry,
+                    $baseDependencyResolver,
+                    $baseExtensionRegistry,
+                    $baseAccessControl,
+                    $baseAudit,
+                    $baseObservability,
+                    $baseHealth,
+                    $baseSecurity,
+                    $baseSettings,
+                    $baseFiles,
+                    $baseNotifications,
+                    $baseFeatureFlags,
+                    $baseMedia,
+                    $baseOutboundWebhooks,
+                    $productPublic,
+                    $productInternal, // Allowed intra-module, enforced by Pest cross-module.
                 ),
 
             // SharedKernel is the lowest layer — no dependencies on other Foundation packages.
@@ -186,6 +252,9 @@ return static function (DeptracConfig $config): void {
             Ruleset::forLayer($baseNotifications),
 
             Ruleset::forLayer($baseFeatureFlags),
+
+            Ruleset::forLayer($baseMedia)
+                ->accesses($baseFiles),
 
             Ruleset::forLayer($baseOutboundWebhooks),
 

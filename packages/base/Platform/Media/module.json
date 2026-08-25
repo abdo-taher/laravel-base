@@ -1,0 +1,26 @@
+{
+    "name": "Base.Platform.Media",
+    "version": "0.1.0",
+    "category": "Platform",
+    "ownership": "base-owned",
+    "namespace": "Base\\Platform\\Media\\",
+    "dependencies": {
+        "required": [
+            "files.storage"
+        ],
+        "optional": []
+    },
+    "provides": [
+        {
+            "capability": "media.attachments",
+            "contract": "Base\\Platform\\Media\\Public\\Contracts\\MediaSynchronizer",
+            "provider": "Base\\Platform\\Media\\MediaServiceProvider"
+        }
+    ],
+    "extension_points": [],
+    "data": {
+        "tables": [
+            "media"
+        ]
+    }
+}
