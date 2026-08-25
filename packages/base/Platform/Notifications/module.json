@@ -1,0 +1,33 @@
+{
+    "name": "Notifications",
+    "category": "Platform",
+    "version": "0.1.0",
+    "ownership": "base-owned",
+    "description": "Provides a generic, framework-independent notification intent and dispatch orchestration capability.",
+    "namespace": "Base\\Platform\\Notifications",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "provides": [
+        {
+            "capability": "notifications.dispatch",
+            "version": "0.1.0"
+        }
+    ],
+    "extension_points": [],
+    "data": {
+        "tables": []
+    },
+    "events": {
+        "publishes": [],
+        "consumes": []
+    },
+    "lifecycle": {
+        "enableable": false,
+        "disable_policy": "preserve-data"
+    },
+    "security": {
+        "classification": "internal"
+    }
+}

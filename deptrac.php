@@ -91,6 +91,9 @@ return static function (DeptracConfig $config): void {
             $baseFiles = Layer::withName('Base.Platform.Files')->collectors(
                 DirectoryConfig::create('^packages/base/Platform/Files/.*'),
             ),
+            $baseNotifications = Layer::withName('Base.Platform.Notifications')->collectors(
+                DirectoryConfig::create('^packages/base/Platform/Notifications/.*'),
+            ),
         )
         ->rulesets(
             Ruleset::forLayer($hostHttp)
@@ -135,6 +138,7 @@ return static function (DeptracConfig $config): void {
                     $baseSecurity,
                     $baseSettings,
                     $baseFiles,
+                    $baseNotifications,
                 ),
 
             // SharedKernel is the lowest layer — no dependencies on other Foundation packages.
@@ -169,6 +173,8 @@ return static function (DeptracConfig $config): void {
             Ruleset::forLayer($baseSettings),
 
             Ruleset::forLayer($baseFiles),
+
+            Ruleset::forLayer($baseNotifications),
 
             // ModuleManager orchestrates across all other Foundation packages.
             // It may only access their Public contracts, not internal layers.
