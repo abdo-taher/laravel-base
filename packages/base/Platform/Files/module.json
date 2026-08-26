@@ -1,5 +1,5 @@
 {
-    "name": "Files",
+    "name": "Base.Platform.Files",
     "category": "Platform",
     "version": "0.1.0",
     "ownership": "base-owned",

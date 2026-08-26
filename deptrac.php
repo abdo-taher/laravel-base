@@ -110,6 +110,10 @@ return static function (DeptracConfig $config): void {
             $baseOutboundWebhooks = Layer::withName('Base.Specialized.OutboundWebhooks')->collectors(
                 DirectoryConfig::create('^packages/base/Specialized/OutboundWebhooks/.*'),
             ),
+            // ── Base Tooling layers ──────────────────────────────────────────
+            $baseToolingProjectFactory = Layer::withName('Base.Tooling.ProjectFactory')->collectors(
+                DirectoryConfig::create('^packages/base/Tooling/ProjectFactory/.*'),
+            ),
             // ── Product layers (Project-owned) ───────────────────────────────
             $productPublic = Layer::withName('Product.Public')->collectors(
                 DirectoryConfig::create('^modules/[^/]+/Public/.*'),
@@ -167,6 +171,7 @@ return static function (DeptracConfig $config): void {
                     $baseOutboundWebhooks,
                     $baseVerification,
                     $baseDevices,
+                    $baseToolingProjectFactory,
                     $productPublic,
                     $productInternal,
                 ),
@@ -198,6 +203,7 @@ return static function (DeptracConfig $config): void {
                     $baseOutboundWebhooks,
                     $baseVerification,
                     $baseDevices,
+                    $baseToolingProjectFactory,
                     $productPublic,
                 ),
 
@@ -224,6 +230,7 @@ return static function (DeptracConfig $config): void {
                     $baseOutboundWebhooks,
                     $baseVerification,
                     $baseDevices,
+                    $baseToolingProjectFactory,
                     $productPublic,
                     $productInternal, // Allowed intra-module, enforced by Pest cross-module.
                 ),
@@ -291,5 +298,13 @@ return static function (DeptracConfig $config): void {
             Ruleset::forLayer($baseDependencyResolver)
                 ->accesses($baseManifest),
             Ruleset::forLayer($baseExtensionRegistry),
+            Ruleset::forLayer($baseToolingProjectFactory)
+                ->accesses(
+                    $baseSharedKernel,
+                    $baseManifest,
+                    $baseDependencyResolver,
+                    $baseModuleManager,
+                    $baseCapabilityRegistry
+                ),
         );
 };

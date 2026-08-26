@@ -1,0 +1,9 @@
+{
+  "project": {
+    "name": "Reference Catalog Example",
+    "slug": "reference-catalog-example",
+    "namespace": "App"
+  },
+  "modules": ["Modules.ReferenceCatalog"],
+  "capabilities": []
+}

@@ -37,10 +37,10 @@ final class DependencyResolutionTest extends TestCase
 
         $this->assertContains('Modules.ReferenceCatalog', $orderedNames);
         $this->assertContains('Base.Platform.Media', $orderedNames);
-        $this->assertContains('Files', $orderedNames);
+        $this->assertContains('Base.Platform.Files', $orderedNames);
 
         // Assert ordering is correct: Files before Media, Media before ReferenceCatalog
-        $filesIndex = array_search('Files', $orderedNames, true);
+        $filesIndex = array_search('Base.Platform.Files', $orderedNames, true);
         $mediaIndex = array_search('Base.Platform.Media', $orderedNames, true);
         $catalogIndex = array_search('Modules.ReferenceCatalog', $orderedNames, true);
 

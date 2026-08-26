@@ -1,0 +1,38 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+$autoloadPaths = [
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../../autoload.php',
+];
+
+$autoloadFound = false;
+foreach ($autoloadPaths as $path) {
+    if (file_exists($path)) {
+        require $path;
+        $autoloadFound = true;
+        break;
+    }
+}
+
+if (!$autoloadFound) {
+    file_put_contents('php://stderr', "Composer autoload not found.\n");
+    exit(1);
+}
+
+use Base\Tooling\ProjectFactory\Presentation\Cli\FactoryApplication;
+
+$repositoryRoot = realpath(__DIR__ . '/..');
+if ($repositoryRoot === false) {
+    file_put_contents('php://stderr', "Could not determine repository root.\n");
+    exit(1);
+}
+
+$app = new FactoryApplication($repositoryRoot);
+/** @var array<int, string> $argv */
+$argv = $_SERVER['argv'];
+$exitCode = $app->run($argv);
+
+exit($exitCode);
