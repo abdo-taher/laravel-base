@@ -1,0 +1,22 @@
+{
+    "name": "Modules.ReferenceCatalog",
+    "version": "0.1.0",
+    "category": "Product",
+    "ownership": "project-owned",
+    "namespace": "Modules\\ReferenceCatalog",
+    "description": "Minimal product reference architecture proof.",
+    "dependencies": {
+        "required": [
+            {
+                "capability": "media.attachments",
+                "version": "^1.0"
+            }
+        ],
+        "optional": []
+    },
+    "provides": [],
+    "extension_points": [],
+    "data": {
+        "tables": ["reference_items"]
+    }
+}

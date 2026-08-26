@@ -135,6 +135,36 @@ final class ManifestDependencyResolverTest extends TestCase
         (new ManifestDependencyResolver)->resolve([$foundation, $platform]);
     }
 
+    public function test_it_allows_platform_to_platform_dependency(): void
+    {
+        $platform1 = $this->manifest(
+            'Platform1',
+            'Platform',
+            [new ManifestDependency('package', 'Platform2', '^1.0', true)],
+        );
+        $platform2 = $this->manifest('Platform2', 'Platform');
+
+        $result = (new ManifestDependencyResolver)->resolve([$platform1, $platform2]);
+        self::assertCount(2, $result->orderedNodes);
+    }
+
+    public function test_it_rejects_platform_to_product_dependency(): void
+    {
+        $platform = $this->manifest(
+            'PlatformConsumer',
+            'Platform',
+            [new ManifestDependency('package', 'ProductProvider', '^1.0', true)],
+        );
+        $product = $this->manifest('ProductProvider', 'Product');
+
+        $this->expectException(DependencyResolutionFailed::class);
+        $this->expectExceptionMessage(
+            'forbidden dependency direction: PlatformConsumer (Platform) -> ProductProvider (Product)',
+        );
+
+        (new ManifestDependencyResolver)->resolve([$platform, $product]);
+    }
+
     public function test_it_rejects_a_duplicate_dependency_declaration(): void
     {
         $provider = $this->manifest('Provider', 'Foundation');

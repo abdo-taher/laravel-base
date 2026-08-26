@@ -1,8 +1,22 @@
 {
     "name": "Base.Platform.Verification",
+    "version": "0.1.0",
+    "category": "Platform",
+    "ownership": "base-owned",
+    "namespace": "Base\\Platform\\Verification",
     "description": "Target-agnostic OTP lifecycle",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
     "provides": [
-        "verification.codes"
+        {
+            "capability": "verification.codes",
+            "version": "0.1.0"
+        }
     ],
-    "requires": []
+    "extension_points": [],
+    "data": {
+        "tables": ["verification_challenges"]
+    }
 }

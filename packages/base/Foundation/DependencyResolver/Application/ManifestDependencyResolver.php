@@ -16,7 +16,7 @@ final class ManifestDependencyResolver implements DependencyResolver
 {
     private const ALLOWED_TARGET_CATEGORIES = [
         'Foundation' => ['Foundation'],
-        'Platform' => ['Foundation'],
+        'Platform' => ['Foundation', 'Platform'],
         'Specialized' => ['Foundation', 'Platform'],
         'Extension' => ['Foundation', 'Platform', 'Specialized'],
         'Product' => ['Foundation', 'Platform', 'Specialized', 'Extension'],

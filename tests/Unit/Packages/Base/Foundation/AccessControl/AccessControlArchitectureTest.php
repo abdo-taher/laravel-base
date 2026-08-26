@@ -184,6 +184,7 @@ final class AccessControlArchitectureTest extends TestCase
                 }
             }
         }
+        self::assertNotEmpty($classes);
     }
 
     // ── Exception fail-closed semantics ──────────────────────────────────────

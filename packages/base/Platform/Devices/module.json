@@ -1,6 +1,27 @@
 {
     "name": "Base.Platform.Devices",
+    "version": "0.1.0",
+    "category": "Platform",
+    "ownership": "base-owned",
+    "namespace": "Base\\Platform\\Devices",
     "description": "Device and push token management",
-    "provides": ["devices.manage"],
-    "requires": ["identity.current-principal"]
+    "dependencies": {
+        "required": [
+            {
+                "capability": "identity.current-principal",
+                "version": "^1.0"
+            }
+        ],
+        "optional": []
+    },
+    "provides": [
+        {
+            "capability": "devices.manage",
+            "version": "0.1.0"
+        }
+    ],
+    "extension_points": [],
+    "data": {
+        "tables": ["devices"]
+    }
 }
