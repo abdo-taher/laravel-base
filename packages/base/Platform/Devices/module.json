@@ -1,0 +1,6 @@
+{
+    "name": "Base.Platform.Devices",
+    "description": "Device and push token management",
+    "provides": ["devices.manage"],
+    "requires": ["identity.current-principal"]
+}

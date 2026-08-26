@@ -85,6 +85,12 @@ return static function (DeptracConfig $config): void {
                 DirectoryConfig::create('^packages/base/Foundation/AccessControl/.*'),
             ),
             // ── Base Platform layers ────────────────────────────────────────
+            $baseVerification = Layer::withName('Base.Platform.Verification')->collectors(
+                DirectoryConfig::create('^packages/base/Platform/Verification/.*'),
+            ),
+            $baseDevices = Layer::withName('Base.Platform.Devices')->collectors(
+                DirectoryConfig::create('^packages/base/Platform/Devices/.*'),
+            ),
             $baseSettings = Layer::withName('Base.Platform.Settings')->collectors(
                 DirectoryConfig::create('^packages/base/Platform/Settings/.*'),
             ),
@@ -159,6 +165,8 @@ return static function (DeptracConfig $config): void {
                     $baseFeatureFlags,
                     $baseMedia,
                     $baseOutboundWebhooks,
+                    $baseVerification,
+                    $baseDevices,
                     $productPublic,
                     $productInternal,
                 ),
@@ -188,6 +196,8 @@ return static function (DeptracConfig $config): void {
                     $baseFeatureFlags,
                     $baseMedia,
                     $baseOutboundWebhooks,
+                    $baseVerification,
+                    $baseDevices,
                     $productPublic,
                 ),
 
@@ -212,6 +222,8 @@ return static function (DeptracConfig $config): void {
                     $baseFeatureFlags,
                     $baseMedia,
                     $baseOutboundWebhooks,
+                    $baseVerification,
+                    $baseDevices,
                     $productPublic,
                     $productInternal, // Allowed intra-module, enforced by Pest cross-module.
                 ),
@@ -243,6 +255,11 @@ return static function (DeptracConfig $config): void {
                 ->accesses($baseIdentity),
 
             Ruleset::forLayer($baseAccessControl)
+                ->accesses($baseIdentity),
+
+            Ruleset::forLayer($baseVerification),
+
+            Ruleset::forLayer($baseDevices)
                 ->accesses($baseIdentity),
 
             Ruleset::forLayer($baseSettings),

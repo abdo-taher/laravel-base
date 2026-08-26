@@ -5,7 +5,7 @@ This catalog defines the machine-readable target dependencies for Project Factor
 ## 1. Media
 - **Name**: `media.attachments`
 - **Layer**: Platform
-- **Status**: Missing
+- **Status**: Implemented
 - **Priority**: P0
 - **Provides**: `media.attachments`
 - **Required capabilities**: `files.storage`
@@ -17,10 +17,10 @@ This catalog defines the machine-readable target dependencies for Project Factor
 ## 2. Verification (OTP)
 - **Name**: `verification.codes`
 - **Layer**: Platform
-- **Status**: Missing
+- **Status**: Implemented
 - **Priority**: P1
 - **Provides**: `verification.codes`
-- **Required capabilities**: `notifications.dispatch` (UNRESOLVED)
+- **Required capabilities**: none
 - **Optional capabilities**: none
 - **Persistence**: package-owned
 - **Framework dependency**: none
@@ -28,8 +28,8 @@ This catalog defines the machine-readable target dependencies for Project Factor
 
 ## 3. Device Management
 - **Name**: `devices.manage`
-- **Layer**: Platform (Candidate)
-- **Status**: Missing
+- **Layer**: Platform
+- **Status**: Implemented
 - **Priority**: P1
 - **Provides**: `devices.manage`
 - **Required capabilities**: `identity.current-principal`

@@ -1,0 +1,8 @@
+{
+    "name": "Base.Platform.Verification",
+    "description": "Target-agnostic OTP lifecycle",
+    "provides": [
+        "verification.codes"
+    ],
+    "requires": []
+}
